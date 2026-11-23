@@ -59,9 +59,19 @@
     }
   }
 
+  // Once the user chats, the chat voice owns the sound — the hero video
+  // stays muted so the two never talk over each other.
+  var chatUsed = false;
+  function muteHeroVideo() {
+    var hv = document.querySelector("video.hero-bg");
+    if (hv) hv.muted = true;
+  }
+
   async function sendChat(userText) {
     if (busy || !userText.trim()) return;
     busy = true;
+    chatUsed = true;
+    muteHeroVideo();
     addMsg("user", userText);
     history.push({ role: "user", content: userText });
     if (history.length > 12) history = history.slice(-12);
@@ -87,6 +97,7 @@
         handleTool(data.tool);
       } else if (data.reply) {
         addMsg("ai", data.reply);
+        speakReply(data.reply);
         history.push({ role: "assistant", content: data.reply });
       } else {
         addMsg("ai", "The Lab is quiet right now — try again in a moment.");
@@ -125,6 +136,7 @@
       }
     } else if (tool.action === "reply" && tool.text) {
       addMsg("ai", tool.text);
+      speakReply(tool.text);
       history.push({ role: "assistant", content: tool.text });
     } else {
       addMsg("ai", "I didn't understand that operator command.");
@@ -212,40 +224,105 @@
     }
   }
 
-  /* ---- Gemma's voice ---- */
-  var voiceToggle = document.getElementById("voice-toggle");
-  var gemmaAudio = null;
+  /* ---- Gemma speaks her replies ---- */
+  var synth = ("speechSynthesis" in window) ? window.speechSynthesis : null;
 
-  function getAudio() {
-    if (!gemmaAudio) {
-      gemmaAudio = new Audio("assets/gemma-welcome.mp3");
-      gemmaAudio.preload = "auto";
-      gemmaAudio.addEventListener("ended", function () { setToggle(false); });
+  // Labs voice rule: she does not speak asterisks, dashes, or other such
+  // characters. Strip those from the SPOKEN text only — the written reply
+  // on screen is unchanged. Periods, commas, and question marks are KEPT:
+  // the voice reads them as pauses, not as words, so she stops at each
+  // sentence instead of flying through it.
+  function cleanForSpeech(text) {
+    return String(text)
+      .replace(/[*_#`\[\]()]/g, " ")
+      .replace(/[-–—]/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  function speakReply(text) {
+    if (!synth) return;
+    muteHeroVideo(); // chat voice speaks alone — video stays quiet
+    var clean = cleanForSpeech(text);
+    if (!clean) return;
+    try {
+      synth.cancel();
+      var utter = new SpeechSynthesisUtterance(clean);
+      utter.rate = 0.85;
+      utter.pitch = 1;
+      synth.speak(utter);
+    } catch (e) { /* voice is best-effort */ }
+  }
+
+  /* ---- Talk to Gemma: voice input ---- */
+  var micBtn = document.getElementById("mic-btn");
+  var SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (micBtn) {
+    if (!SpeechRec) {
+      micBtn.addEventListener("click", function () {
+        addMsg("ai", "Voice input isn't supported in this browser — type your message instead.");
+      });
+    } else {
+      var rec = new SpeechRec();
+      rec.lang = "en-US";
+      rec.interimResults = false;
+      rec.maxAlternatives = 1;
+      micBtn.addEventListener("click", function () {
+        try {
+          rec.start();
+          micBtn.classList.add("listening");
+          chatStatus.textContent = "Listening…";
+        } catch (e) { /* already listening */ }
+      });
+      rec.addEventListener("result", function (e) {
+        var said = (e.results[0][0] || {}).transcript || "";
+        micBtn.classList.remove("listening");
+        refreshOpUI();
+        if (said.trim()) sendChat(said.trim());
+      });
+      rec.addEventListener("end", function () {
+        micBtn.classList.remove("listening");
+        refreshOpUI();
+      });
+      rec.addEventListener("error", function () {
+        micBtn.classList.remove("listening");
+        refreshOpUI();
+        addMsg("ai", "I didn't catch that — try again or type it.");
+      });
     }
-    return gemmaAudio;
   }
 
-  function setToggle(playing) {
-    if (!voiceToggle) return;
-    voiceToggle.textContent = playing ? "🔊" : "🔇";
-    voiceToggle.classList.toggle("off", !playing);
-    voiceToggle.setAttribute("aria-label", playing ? "Stop Gemma's voice" : "Hear Gemma's welcome");
-  }
-
-  if (voiceToggle) {
-    voiceToggle.addEventListener("click", function (e) {
-      e.stopPropagation();
-      var a = getAudio();
-      if (a.paused) {
-        a.currentTime = 0;
-        a.play().catch(function () {});
-        setToggle(true);
-      } else {
-        a.pause();
-        a.currentTime = 0;
-        setToggle(false);
+  /* ---- Hero video sound: try sound first; any interaction turns it on ---- */
+  var heroVideo = document.querySelector("video.hero-bg");
+  if (heroVideo) {
+    function tryUnmute() {
+      if (chatUsed) return; // user is chatting — chat voice owns the sound
+      if (!heroVideo.muted) return; // already sounding
+      heroVideo.muted = false;
+      heroVideo.volume = 1;
+      var p = heroVideo.play();
+      if (p && p.catch) {
+        p.catch(function () {
+          // Still blocked — stay quiet and playing, try again on next touch.
+          heroVideo.muted = true;
+        });
       }
+    }
+    // Any interaction turns her sound on. No once:true — keep trying
+    // until sound is actually on, so one early stray tap can't eat it.
+    ["pointerdown", "touchstart", "click", "keydown", "scroll"].forEach(function (ev) {
+      document.addEventListener(ev, tryUnmute, { passive: true });
     });
+    // Try sound on load; if the browser blocks it, stay quiet and playing.
+    heroVideo.muted = false;
+    heroVideo.volume = 1;
+    var hp = heroVideo.play();
+    if (hp && hp.catch) {
+      hp.catch(function () {
+        heroVideo.muted = true;
+        heroVideo.play().catch(function () {});
+      });
+    }
   }
 
   // Seed greeting

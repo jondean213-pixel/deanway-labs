@@ -148,6 +148,7 @@ h2 { font-size: clamp(1.6rem, 4vw, 2.2rem); margin-bottom: 10px; }
 }
 .site-footer strong { color: var(--gold-light); }
 .site-footer .fine { font-size: 0.85rem; color: var(--muted); margin-top: 10px; }
+.site-footer a { color: var(--gold-light); }
 
 /* ---- Talk to the Lab: chat ---- */
 .kicker-light { color: var(--gold-light); }
@@ -263,12 +264,56 @@ h2 { font-size: clamp(1.6rem, 4vw, 2.2rem); margin-bottom: 10px; }
   border-radius: 50%; box-shadow: 0 0 16px rgba(201,162,39,0.55);
   z-index: 2;
 }
-.voice-toggle {
-  position: absolute; top: 92px; right: 24px; z-index: 2;
-  width: 48px; height: 48px; border-radius: 50%;
-  background: rgba(13,21,38,0.8); border: 1px solid var(--border);
-  font-size: 1.25rem; cursor: pointer; color: #fff;
-}
-.voice-toggle.off { opacity: 0.45; }
 .hero-ctas-small { margin-top: 22px; }
 .hero-ctas-small .btn { padding: 11px 22px; font-size: 0.9rem; }
+
+/* ---- Turn 1: graphics figures ---- */
+.site-figure {
+  margin: 0 0 30px; border: 1px solid var(--border);
+  border-radius: var(--radius); overflow: hidden; background: var(--surface);
+}
+.site-figure img { display: block; width: 100%; height: auto; }
+.site-figure figcaption { padding: 14px 18px; color: var(--muted); font-size: 0.9rem; }
+
+/* ---- Turn 1: top-left dropdown menu ---- */
+.menu { position: relative; }
+.menu summary {
+  list-style: none; cursor: pointer; user-select: none;
+  color: var(--gold-light); font-weight: 700; font-size: 0.95rem;
+  border: 1px solid var(--border); border-radius: 999px; padding: 8px 16px;
+  white-space: nowrap;
+}
+.menu summary::-webkit-details-marker { display: none; }
+.menu summary:hover { border-color: var(--gold-light); }
+.menu-list {
+  position: absolute; top: calc(100% + 10px); left: 0; z-index: 60;
+  display: grid; min-width: 210px; padding: 8px;
+  background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: var(--radius); box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+}
+.menu-list a {
+  color: var(--text); text-decoration: none; font-weight: 600;
+  padding: 10px 14px; border-radius: 8px;
+}
+.menu-list a:hover { background: rgba(201,162,39,0.12); color: var(--gold-light); }
+
+/* ---- Turn 1: mic button ---- */
+.mic-btn {
+  flex: none; width: 48px; height: 48px; border-radius: 50%;
+  background: var(--bg); border: 1px solid var(--border);
+  font-size: 1.2rem; cursor: pointer; color: #fff;
+}
+.mic-btn:hover { border-color: var(--gold-light); }
+.mic-btn.listening {
+  border-color: #e5484d; box-shadow: 0 0 0 4px rgba(229,72,77,0.25);
+  animation: pulse 1s infinite;
+}
+
+/* ---- Store ---- */
+.store-license { font-size: 0.85rem; opacity: 0.75; margin-top: 12px; }
+.store-status {
+  display: inline-block; margin-top: 10px; padding: 4px 12px;
+  border: 1px solid var(--border); border-radius: 999px;
+  font-size: 0.85rem; font-weight: 700; color: var(--gold-light);
+}
+.store-img { width: 100%; height: auto; border-radius: 12px; display: block; margin: 10px 0 12px; }

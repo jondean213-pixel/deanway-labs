@@ -6,12 +6,22 @@
 <title>DeanWay Labs — Personal AI, Built in the Open</title>
 <meta name="description" content="DeanWay Labs builds personal AI systems that run on hardware you own: assistant, engineer, and governance — one architecture, owned outright.">
 <link rel="icon" type="image/png" href="assets/favicon.png">
-<link rel="stylesheet" href="styles.css?v=4">
+<link rel="stylesheet" href="styles.css?v=16">
 </head>
 <body>
 
 <header class="site-header">
   <div class="wrap header-inner">
+    <details class="menu">
+      <summary>☰ Menu</summary>
+      <nav class="menu-list">
+        <a href="#talk">Talk to the Lab</a>
+        <a href="#brains">Meet the Brains</a>
+        <a href="#store">Store</a>
+        <a href="#updates">Build Log</a>
+        <a href="#principles">Principles</a>
+      </nav>
+    </details>
     <a class="brand" href="#top">
       <img class="brand-emblem" src="assets/labs-emblem.png" alt="DeanWay Labs logo">
       <span class="brand-text">DeanWay <em>Labs</em></span>
@@ -19,6 +29,7 @@
     <nav class="nav">
       <a href="#talk">Talk to the Lab</a>
       <a href="#brains">The Brains</a>
+      <a href="#store">Store</a>
       <a href="#updates">Build Log</a>
       <a href="#principles">Principles</a>
     </nav>
@@ -29,12 +40,11 @@
 <main id="top">
 
   <section class="hero hero-image hero-talking">
-    <video class="hero-bg" autoplay muted loop playsinline preload="auto" poster="assets/labs-aiface.jpg">
-      <source src="assets/labs-aiface-talk.mp4" type="video/mp4">
+    <video class="hero-bg" autoplay muted playsinline preload="auto" poster="assets/labs-aiface.jpg">
+      <source src="assets/labs-aiface-talk.mp4?v=2" type="video/mp4">
     </video>
     <div class="hero-shade"></div>
     <img class="hero-corner-emblem" src="assets/labs-emblem.png" alt="DeanWay Labs emblem">
-    <button class="voice-toggle off" id="voice-toggle" type="button" aria-label="Hear Gemma's welcome">🔇</button>
     <div class="wrap hero-inner">
       <p class="kicker kicker-light">DeanWay Labs · Personal AI</p>
       <h1 class="hero-title">AI you own.<br>Not AI you rent.</h1>
@@ -51,6 +61,10 @@
       <p class="kicker">Live · AI concierge</p>
       <h2>Talk to the Lab</h2>
       <p class="section-sub">This website is AI-operated. Ask about the work, the brains, the principles — or leave your contact info and we'll reach out.</p>
+      <figure class="site-figure">
+        <img src="assets/gemma-agent-face.jpg" alt="Gemma — the DeanWay Labs AI agent" loading="lazy">
+        <figcaption>Gemma, the Lab's AI agent — ask her anything below, or tap the mic and talk to her.</figcaption>
+      </figure>
       <div class="chat-card" id="chat-card">
         <div class="chat-head">
           <div class="chat-id">
@@ -82,6 +96,7 @@
         </form>
         <form class="chat-input" id="chat-form">
           <input type="text" id="chat-text" placeholder="Ask about the lab…" autocomplete="off" maxlength="500">
+          <button type="button" class="mic-btn" id="mic-btn" aria-label="Talk to Gemma">🎤</button>
           <button type="submit" class="btn btn-gold btn-sm">Send</button>
         </form>
       </div>
@@ -94,6 +109,10 @@
       <h2>One person. One phone. A full AI lab.</h2>
       <p>DeanWay Labs is proving that frontier-grade personal AI doesn't require a data center — it requires architecture. Assistant, engineer, and governance, running locally on an ordinary phone, built in the open, owned outright by the person it serves.</p>
       <p>We build it like it matters, because it does: every system is engineered as though it may one day become a product, documented so it can outlive us, and governed by principles that don't bend for convenience.</p>
+      <figure class="site-figure">
+        <img src="assets/labs-server-room.webp" alt="The DeanWay Labs server room" loading="lazy">
+        <figcaption>The lab's machines — small hardware, serious architecture.</figcaption>
+      </figure>
     </div>
   </section>
 
@@ -102,6 +121,10 @@
       <p class="kicker">Four systems, one architecture</p>
       <h2>Meet the brains</h2>
       <p class="section-sub">Each brain is trained, tested, and logged like an engineering discipline — not prompted like a chatbot.</p>
+      <figure class="site-figure">
+        <img src="assets/labs-neural-brain.webp" alt="A neural network brain" loading="lazy">
+        <figcaption>Every brain is a network — trained, tested, and logged.</figcaption>
+      </figure>
       <div class="cards">
         <article class="card">
           <p class="card-tag">Platform</p>
@@ -122,6 +145,56 @@
           <p class="card-tag">Engineering brain</p>
           <h3>OpenCoder</h3>
           <p>A software engineering brain trained on-device: inspect, write, test, fix — so the lab can build its own tools.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="store" class="section">
+    <div class="wrap">
+      <p class="kicker">The Lab store</p>
+      <h2>Brains, coming soon</h2>
+      <p class="section-sub">Small models that run on hardware you own. Each one is listed with its license. No prices set yet, no checkout — these are coming soon.</p>
+      <div class="cards">
+        <article class="card">
+          <p class="card-tag">Assistant brain · 1.5B</p>
+          <img class="store-img" src="assets/brain-qwen-instruct.webp" alt="Qwen 2.5 Instruct brain" loading="lazy">
+          <h3>Qwen 2.5 Instruct</h3>
+          <p>A general assistant brain. Answers questions, reasons, and helps with everyday tasks, right on your phone with no cloud. Red-teamed by Jon and Roman.</p>
+          <p class="store-license">Apache License 2.0 · Base model by Alibaba Cloud (Qwen)</p>
+          <p class="store-status">Coming soon</p>
+        </article>
+        <article class="card">
+          <p class="card-tag">Coding brain · 1.5B</p>
+          <img class="store-img" src="assets/brain-opencoder.webp" alt="OpenCoder brain" loading="lazy">
+          <h3>OpenCoder</h3>
+          <p>A coding brain. Writes and completes code from plain instructions, right on your phone with no cloud. Red-teamed by Jon and Roman.</p>
+          <p class="store-license">Apache License 2.0 · Base model by OpenCoder</p>
+          <p class="store-status">Coming soon</p>
+        </article>
+        <article class="card">
+          <p class="card-tag">Coding brain · 1.5B</p>
+          <img class="store-img" src="assets/brain-qwen-coder.webp" alt="Qwen 2.5 Coder brain" loading="lazy">
+          <h3>Qwen 2.5 Coder</h3>
+          <p>A coding brain built for the Lab. Writes and completes code from plain instructions, right on your phone with no cloud.</p>
+          <p class="store-license">Apache License 2.0 · Base model by Alibaba Cloud (Qwen)</p>
+          <p class="store-status">Coming soon</p>
+        </article>
+        <article class="card">
+          <p class="card-tag">Function brain · 270M</p>
+          <img class="store-img" src="assets/brain-functiongemma.webp" alt="FunctionGemma brain" loading="lazy">
+          <h3>FunctionGemma</h3>
+          <p>A small, fast brain that calls functions and tools. Built for on-device tasks and the Travels side.</p>
+          <p class="store-license">Gemma Terms of Use · Base model by Google</p>
+          <p class="store-status">Coming soon</p>
+        </article>
+        <article class="card">
+          <p class="card-tag">Assistant brain · 270M</p>
+          <img class="store-img" src="assets/brain-gemma3.webp" alt="Gemma 3 IT brain" loading="lazy">
+          <h3>Gemma 3 IT</h3>
+          <p>A small instruction-tuned brain. Answers and follows instructions, right on your phone with no cloud.</p>
+          <p class="store-license">Gemma Terms of Use · Base model by Google</p>
+          <p class="store-status">Coming soon</p>
         </article>
       </div>
     </div>
@@ -150,6 +223,10 @@
         <li><strong>Continuity across generations.</strong><span>Durable knowledge lives in DeanWay-controlled systems — not in any one chat or model session.</span></li>
         <li><strong>Principles before decisions.</strong><span>The Absolutes, architecture, and continuity records are consulted before development decisions are made.</span></li>
       </ol>
+      <figure class="site-figure">
+        <img src="assets/labs-governor-shield.webp" alt="QuietOS, the governor" loading="lazy">
+        <figcaption>QuietOS, the governor — the AI proposes, QuietOS disposes.</figcaption>
+      </figure>
     </div>
   </section>
 
@@ -158,10 +235,11 @@
 <footer class="site-footer">
   <div class="wrap">
     <p><strong>DeanWay Labs</strong> — We build personal AI.</p>
+    <p class="fine">Reach us: <a href="mailto:jon@deanwaylabs.com">jon@deanwaylabs.com</a> · <a href="mailto:support@deanwaylabs.com">support@deanwaylabs.com</a> · <a href="mailto:roman@deanwaylabs.com">roman@deanwaylabs.com</a> · <a href="mailto:hark@deanwaylabs.com">hark@deanwaylabs.com</a> · <a href="tel:+18123064385">812.306.4385</a></p>
     <p class="fine">This site is AI-operated · A DeanWay LLC company · Owner / final authority: Jon Dean<br>© 2026 DeanWay Labs. All rights reserved.</p>
   </div>
 </footer>
 
-<script src="lab.js?v=4"></script>
+<script src="lab.js?v=16"></script>
 </body>
 </html>
